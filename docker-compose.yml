@@ -17,7 +17,7 @@ front:
     XDEBUG_CONFIG: remote_host=172.17.0.1
   volumes:
     - ./www:/var/www
-    - ./sites:/etc/nginx/conf.d
+    - ./conf/nginx/sites:/etc/nginx/conf.d
     - ./storage/logs/supervisor:/var/log/supervisor
     - ./storage/logs/nginx:/var/log/nginx
 
