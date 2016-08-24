@@ -55,6 +55,10 @@ COPY conf/nginx/nginx.conf /etc/nginx/
 COPY conf/nginx/supervisord.conf /etc/supervisor/conf.d/
 COPY conf/nginx/php.ini /etc/php5/fpm/conf.d/40-custom.ini
 
+# Replace xdebug.ini
+RUN rm -f /etc/php5/mods-available/xdebug.ini
+COPY conf/php/mods-available/xdebug.ini /etc/php5/mods-available/xdebug.ini
+
 ################################################################################
 # Volumes
 ################################################################################
