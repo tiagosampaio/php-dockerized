@@ -6,11 +6,12 @@ front:
     - "9000:9000"
   links:
     - mysql:mysql
-    - mongo:mongo
-    - memcached:memcached
     - redis:redis
-    - elasticsearch:elasticsearch
-    - rabbitmq:rabbitmq
+#    - solr:solr
+#    - mongo:mongo
+#    - memcached:memcached
+#    - elasticsearch:elasticsearch
+#    - rabbitmq:rabbitmq
   volumes:
     - ./www:/var/www
     - ./sites:/etc/nginx/conf.d
@@ -18,34 +19,46 @@ front:
 
 mysql:
   image: mysql
+  container_name: mysql
   ports:
     - "3306:3306"
   environment:
     MYSQL_ROOT_PASSWORD: password
 
-mongo:
-  image: mongo
-  ports:
-    - "27017:27017"
-
-memcached:
-  image: memcached
-  ports:
-    - "11211:11211"
-
 redis:
   image: redis
+  container_name: redis
   ports:
     - "6379:6379"
 
-elasticsearch:
-  image: elasticsearch
-  ports:
-    - "9200:9200"
-    - "9300:9300"
+#solr:
+#  image: solr
+#  container_name: solr
+#  ports:
+#    - "27017:27017"
 
-rabbitmq:
-  image: rabbitmq:3.6.1-management
-  ports:
-    - "15672:15672"
-    - "5672:5672"
+#mongo:
+#  image: mongo
+#  container_name: mongo
+#  ports:
+#    - "27017:27017"
+
+#memcached:
+#  image: memcached
+#  container_name: memcached
+#  ports:
+#    - "11211:11211"
+
+#elasticsearch:
+#  image: elasticsearch
+#  container_name: elasticsearch
+#  ports:
+#    - "9200:9200"
+#    - "9300:9300"
+
+#rabbitmq:
+#  image: rabbitmq:3.6.1-management
+#  container_name: rabbitmq
+#  ports:
+#    - "15672:15672"
+#    - "5672:5672"

@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -my \
   supervisor \
   curl \
   wget \
+  vim \
   php5-curl \
   php5-fpm \
   php5-gd \
@@ -24,6 +25,8 @@ RUN apt-get update && apt-get install -my \
   php5-mcrypt \
   php5-sqlite \
   php5-xdebug \
+  php5-intl \
+  php5-xsl \
   php-apc
 
 # Ensure that PHP5 FPM is run as root.
@@ -43,14 +46,14 @@ RUN sed -i '/^;pm\.status_path/s/^;//' /etc/php5/fpm/pool.d/www.conf
 RUN sed -i '/.*xdebug.so$/s/^/;/' /etc/php5/mods-available/xdebug.ini
 
 # Install HHVM
-RUN apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0x5a16e7281be7a449
-RUN echo deb http://dl.hhvm.com/debian jessie main | tee /etc/apt/sources.list.d/hhvm.list
-RUN apt-get update && apt-get install -y hhvm
+# RUN apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0x5a16e7281be7a449
+# RUN echo deb http://dl.hhvm.com/debian jessie main | tee /etc/apt/sources.list.d/hhvm.list
+# RUN apt-get update && apt-get install -y hhvm
 
 # Add configuration files
-COPY conf/nginx.conf /etc/nginx/
-COPY conf/supervisord.conf /etc/supervisor/conf.d/
-COPY conf/php.ini /etc/php5/fpm/conf.d/40-custom.ini
+COPY conf/nginx/nginx.conf /etc/nginx/
+COPY conf/nginx/supervisord.conf /etc/supervisor/conf.d/
+COPY conf/nginx/php.ini /etc/php5/fpm/conf.d/40-custom.ini
 
 ################################################################################
 # Volumes
