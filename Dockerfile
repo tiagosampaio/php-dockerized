@@ -53,7 +53,7 @@ RUN sed -i '/.*xdebug.so$/s/^/;/' /etc/php5/mods-available/xdebug.ini
 # Add configuration files
 COPY conf/nginx/nginx.conf /etc/nginx/
 COPY conf/nginx/supervisord.conf /etc/supervisor/conf.d/
-COPY conf/nginx/php.ini /etc/php5/fpm/conf.d/40-custom.ini
+COPY conf/php/php.ini /etc/php5/fpm/conf.d/40-custom.ini
 
 # Replace xdebug.ini
 RUN rm -f /etc/php5/mods-available/xdebug.ini

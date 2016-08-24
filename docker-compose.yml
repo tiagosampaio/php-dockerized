@@ -13,6 +13,8 @@ front:
 #    - memcached:memcached
 #    - elasticsearch:elasticsearch
 #    - rabbitmq:rabbitmq
+  environment:
+    XDEBUG_CONFIG: remote_host=172.17.0.1
   volumes:
     - ./www:/var/www
     - ./sites:/etc/nginx/conf.d
