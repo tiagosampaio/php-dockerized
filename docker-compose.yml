@@ -1,5 +1,6 @@
 front:
   build: .
+  container_name: front
   ports:
     - "80:80"
     - "443:443"
