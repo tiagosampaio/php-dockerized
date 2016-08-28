@@ -9,7 +9,7 @@ front:
   links:
     - mysql:mysql
     - redis:redis
-#    - varnish:varnish
+    - varnish:varnish
 #    - solr:solr
 #    - mongo:mongo
 #    - memcached:memcached
@@ -39,12 +39,12 @@ redis:
   ports:
     - "63790:6379"
 
-#varnish:
-#  build: .
-#  dockerfile: builders/VarnishCache
-#  container_name: varnish
-#  ports:
-#      - "8080:80"
+varnish:
+  build: .
+  dockerfile: builders/VarnishCache
+  container_name: varnish
+  ports:
+      - "8080:80"
 
 #solr:
 #  image: solr
