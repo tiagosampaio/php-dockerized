@@ -11,6 +11,7 @@ FROM debian
 # Update
 RUN apt-get update && apt-get install -my \
   curl \
+  vim \
   supervisor \
   apt-transport-https
 
