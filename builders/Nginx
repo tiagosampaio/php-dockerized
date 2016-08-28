@@ -51,13 +51,13 @@ RUN sed -i '/.*xdebug.so$/s/^/;/' /etc/php5/mods-available/xdebug.ini
 # RUN apt-get update && apt-get install -y hhvm
 
 # Add configuration files
-COPY conf/nginx/nginx.conf /etc/nginx/
-COPY conf/nginx/supervisord.conf /etc/supervisor/conf.d/
-COPY conf/php/php.ini /etc/php5/fpm/conf.d/40-custom.ini
+COPY ./conf/nginx/nginx.conf /etc/nginx/
+COPY ./conf/nginx/supervisord.conf /etc/supervisor/conf.d/
+COPY ./conf/php/php.ini /etc/php5/fpm/conf.d/40-custom.ini
 
 # Replace xdebug.ini
 RUN rm -f /etc/php5/mods-available/xdebug.ini
-COPY conf/php/mods-available/xdebug.ini /etc/php5/mods-available/xdebug.ini
+COPY ./conf/php/mods-available/xdebug.ini /etc/php5/mods-available/xdebug.ini
 
 ################################################################################
 # Volumes
