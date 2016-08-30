@@ -22,12 +22,15 @@ RUN apt-get update && apt-get install -my varnish
 
 # Add configuration files
 COPY ./conf/varnish/supervisord.conf /etc/supervisor/conf.d/
+COPY ./conf/varnish/default/varnish /etc/default/varnish
+COPY ./conf/varnish/etc/default.vcl /etc/varnish/default.vcl
+COPY ./conf/varnish/init.d/varnish /etc/init.d/varnish
 
 ################################################################################
 # Ports
 ################################################################################
 
-EXPOSE 80 8080
+EXPOSE 80
 
 ################################################################################
 # Entrypoint

@@ -1,7 +1,7 @@
-front:
+backend:
   build: .
   dockerfile: builders/Nginx
-  container_name: front
+  container_name: backend
   ports:
     - "80:80"
     - "443:443"
@@ -9,7 +9,6 @@ front:
   links:
     - mysql:mysql
     - redis:redis
-    - varnish:varnish
 #    - solr:solr
 #    - mongo:mongo
 #    - memcached:memcached
@@ -37,14 +36,18 @@ redis:
   image: redis
   container_name: redis
   ports:
-    - "63790:6379"
+    - "6379:6379"
 
 varnish:
   build: .
   dockerfile: builders/VarnishCache
   container_name: varnish
   ports:
-      - "8080:80"
+    - "8080:80"
+  links:
+    - backend:backend
+  volumes:
+    - ./conf/varnish/etc:/etc/varnish
 
 #solr:
 #  image: solr
