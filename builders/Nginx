@@ -53,9 +53,12 @@ RUN sed -i '/.*xdebug.so$/s/^/;/' /etc/php5/mods-available/xdebug.ini
 # Install SSMTP
 RUN apt-get install -y ssmtp
 COPY conf/ssmtp.conf /etc/ssmtp/
+ADD conf/ssmtp/ssmtp.sh /etc/ssmtp/ssmtp.sh
 RUN \
     chmod 640 /etc/ssmtp/ssmtp.conf && \
     chown root:mail /etc/ssmtp/ssmtp.conf
+
+RUN chmod +x /etc/ssmtp/ssmtp.sh
 
 # Add configuration files
 COPY ./conf/nginx/nginx.conf /etc/nginx/
