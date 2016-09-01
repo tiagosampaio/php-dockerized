@@ -9,6 +9,7 @@ backend:
   links:
     - mysql:mysql
     - redis:redis
+    - gearman:gearman
 #    - solr:solr
 #    - mongo:mongo
 #    - memcached:memcached
@@ -31,6 +32,7 @@ mysql:
     MYSQL_ROOT_PASSWORD: root
   volumes:
     - ./storage/mysql/data:/var/lib/mysql
+    - ./storage/dumps:/var/dumps
 
 redis:
   image: redis
@@ -48,6 +50,13 @@ varnish:
     - backend:backend
   volumes:
     - ./conf/varnish/etc:/etc/varnish
+    
+gearman:
+  build: .
+  dockerfile: builders/Gearman
+  container_name: gearman
+  ports:
+     - "4730:4730"
 
 #solr:
 #  image: solr
