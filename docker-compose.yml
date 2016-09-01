@@ -17,6 +17,12 @@ backend:
 #    - rabbitmq:rabbitmq
   environment:
     XDEBUG_CONFIG: remote_host=172.17.0.1
+    SMTP_HOST: 'smtp.gmail.com:587'
+    SMTP_DOMAIN: 'localhost'
+    SMTP_TLS: 'yes'
+    SMTP_STARTTLS: 'yes'
+    SMTP_USERNAME: 'username'
+    SMTP_PASSWORD: 'password'
   volumes:
     - ./www:/var/www
     - ./conf/nginx/sites:/etc/nginx/conf.d
