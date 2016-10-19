@@ -7,31 +7,44 @@ backend:
     - "443:443"
     - "9000:9000"
   links:
-    - mysql:mysql
     - redis:redis
-    - gearman:gearman
+    - percona:percona
+#    - mysql:mysql
+#    - gearman:gearman
 #    - solr:solr
 #    - mongo:mongo
 #    - memcached:memcached
 #    - elasticsearch:elasticsearch
 #    - rabbitmq:rabbitmq
   environment:
-    XDEBUG_CONFIG: remote_host=172.17.0.1
+    XDEBUG_CONFIG: remote_host=127.0.0.1
   volumes:
-    - ./www:/var/www
+    - ./www:/storage/www
+    - /var/www:/var/www
     - ./conf/nginx/sites:/etc/nginx/conf.d
     - ./storage/logs/supervisor:/var/log/supervisor
     - ./storage/logs/nginx:/var/log/nginx
 
-mysql:
-  image: mysql
-  container_name: mysql
+#mysql:
+#  image: mysql
+#  container_name: mysql
+#  ports:
+#    - "3307:3306"
+#  environment:
+#    MYSQL_ROOT_PASSWORD: root
+#  volumes:
+#    - ./storage/mysql/data:/var/lib/mysql
+#    - ./storage/dumps:/var/dumps
+
+percona:
+  image: percona
+  container_name: percona
   ports:
     - "3306:3306"
   environment:
     MYSQL_ROOT_PASSWORD: root
   volumes:
-    - ./storage/mysql/data:/var/lib/mysql
+    - ./storage/percona/data:/var/lib/mysql
     - ./storage/dumps:/var/dumps
 
 redis:
@@ -40,23 +53,23 @@ redis:
   ports:
     - "6379:6379"
 
-varnish:
-  build: .
-  dockerfile: builders/VarnishCache
-  container_name: varnish
-  ports:
-    - "8080:80"
-  links:
-    - backend:backend
-  volumes:
-    - ./conf/varnish/etc:/etc/varnish
+#varnish:
+#  build: .
+#  dockerfile: builders/VarnishCache
+#  container_name: varnish
+#  ports:
+#    - "8080:80"
+#  links:
+#    - backend:backend
+#  volumes:
+#    - ./conf/varnish/etc:/etc/varnish
     
-gearman:
-  build: .
-  dockerfile: builders/Gearman
-  container_name: gearman
-  ports:
-     - "4730:4730"
+#gearman:
+#  build: .
+#  dockerfile: builders/Gearman
+#  container_name: gearman
+#  ports:
+#     - "4730:4730"
 
 #solr:
 #  image: solr
