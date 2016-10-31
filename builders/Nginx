@@ -59,6 +59,16 @@ COPY ./conf/php/php.ini /etc/php5/fpm/conf.d/40-custom.ini
 RUN rm -f /etc/php5/mods-available/xdebug.ini
 COPY ./conf/php/mods-available/xdebug.ini /etc/php5/mods-available/xdebug.ini
 
+# Aliases
+RUN echo "alias ll='ls -lah'" >> /root/.bashrc
+RUN echo "alias l='ll'"       >> /root/.bashrc
+RUN echo "alias c='clear'"    >> /root/.bashrc
+
+# Install N98-Magerun
+RUN wget https://files.magerun.net/n98-magerun.phar
+RUN chmod +x n98-magerun.phar
+RUN mv ./n98-magerun.phar /usr/local/bin/n98-magerun
+
 ################################################################################
 # Volumes
 ################################################################################
