@@ -9,6 +9,7 @@ backend:
   links:
     - redis:redis
     - percona:percona
+    - mailhog:mailhog
 #    - mysql:mysql
 #    - gearman:gearman
 #    - solr:solr
@@ -52,6 +53,13 @@ redis:
   container_name: redis
   ports:
     - "6379:6379"
+
+mailhog:
+   image: mailhog/mailhog
+   container_name: mailhog
+   ports:
+     - "1025:1025"
+     - "8025:8025"
 
 #varnish:
 #  build: .

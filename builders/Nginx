@@ -69,6 +69,15 @@ RUN wget https://files.magerun.net/n98-magerun.phar
 RUN chmod +x n98-magerun.phar
 RUN mv ./n98-magerun.phar /usr/local/bin/n98-magerun
 
+### Mailhog
+RUN apt-get update && apt-get install -my golang-go git
+ENV GOPATH /tmp
+RUN cd /tmp
+RUN go get github.com/mailhog/mhsendmail
+COPY ./conf/mailhog/cmd.go /tmp/src/github.com/mailhog/mhsendmail/cmd/cmd.go
+RUN cd /tmp/src/github.com/mailhog/mhsendmail/ && go build 
+RUN cp /tmp/src/github.com/mailhog/mhsendmail/mhsendmail /usr/local/bin
+
 ################################################################################
 # Volumes
 ################################################################################
