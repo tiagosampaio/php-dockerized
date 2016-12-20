@@ -75,7 +75,7 @@ RUN chmod +x n98-magerun.phar
 RUN mv ./n98-magerun.phar /usr/local/bin/n98-magerun
 
 ### Mailhog
-RUN apt-get update && apt-get install -my golang-go git
+RUN apt-get install -my golang-go git
 ENV GOPATH /tmp
 RUN cd /tmp
 RUN go get github.com/mailhog/mhsendmail
