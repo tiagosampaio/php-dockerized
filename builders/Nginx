@@ -64,6 +64,11 @@ RUN echo "alias ll='ls -lah'" >> /root/.bashrc
 RUN echo "alias l='ll'"       >> /root/.bashrc
 RUN echo "alias c='clear'"    >> /root/.bashrc
 
+# Install Composer
+RUN wget https://getcomposer.org/composer.phar
+RUN chmod +x composer.phar
+RUN mv composer.phar /usr/local/bin/composer
+
 # Install N98-Magerun
 RUN wget https://files.magerun.net/n98-magerun.phar
 RUN chmod +x n98-magerun.phar
