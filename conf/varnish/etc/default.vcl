@@ -13,7 +13,7 @@
 vcl 4.0;
 
 # Default backend definition. Set this to point to your content server.
-backend default {
+backend nginx {
     .host = "backend";
     .port = "80";
 }
@@ -23,6 +23,8 @@ sub vcl_recv {
     #
     # Typically you clean up the request here, removing cookies you don't need,
     # rewriting the request, etc.
+
+    return(hash);
 }
 
 sub vcl_backend_response {
@@ -37,4 +39,10 @@ sub vcl_deliver {
     # response to the client.
     #
     # You can do accounting or modifying the final object here.
+
+    if (obj.hits > 0) {
+        set resp.http.X-Cache  = "HIT";
+    } else {
+        set resp.http.X-Cache  = "MISS";
+    }
 }

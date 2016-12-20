@@ -11,6 +11,7 @@ FROM debian
 # Update
 RUN apt-get update && apt-get install -my \
   curl \
+  wget \
   vim \
   supervisor \
   apt-transport-https
@@ -25,6 +26,11 @@ COPY ./conf/varnish/supervisord.conf /etc/supervisor/conf.d/
 COPY ./conf/varnish/default/varnish /etc/default/varnish
 COPY ./conf/varnish/etc/default.vcl /etc/varnish/default.vcl
 COPY ./conf/varnish/init.d/varnish /etc/init.d/varnish
+
+# Aliases
+RUN echo "alias ll='ls -lah'" >> /root/.bashrc
+RUN echo "alias l='ll'"       >> /root/.bashrc
+RUN echo "alias c='clear'"    >> /root/.bashrc
 
 ################################################################################
 # Ports
