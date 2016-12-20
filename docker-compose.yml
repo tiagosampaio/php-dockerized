@@ -1,104 +1,111 @@
-backend:
-  build: .
-  dockerfile: builders/Nginx
-  container_name: backend
-  ports:
-    - "80:80"
-    - "443:443"
-    - "9000:9000"
-  links:
-    - redis:redis
-    - percona:percona
-#    - mysql:mysql
-#    - gearman:gearman
-#    - solr:solr
-#    - mongo:mongo
-#    - memcached:memcached
-#    - elasticsearch:elasticsearch
-#    - rabbitmq:rabbitmq
-  environment:
-    XDEBUG_CONFIG: remote_host=127.0.0.1
-  volumes:
-    - ./www:/storage/www
-    - /var/www:/var/www
-    - ./conf/nginx/sites:/etc/nginx/conf.d
-    - ./storage/logs/supervisor:/var/log/supervisor
-    - ./storage/logs/nginx:/var/log/nginx
+version: '2'
 
-#mysql:
-#  image: mysql
-#  container_name: mysql
-#  ports:
-#    - "3307:3306"
-#  environment:
-#    MYSQL_ROOT_PASSWORD: root
-#  volumes:
-#    - ./storage/mysql/data:/var/lib/mysql
-#    - ./storage/dumps:/var/dumps
+services:
 
-percona:
-  image: percona
-  container_name: percona
-  ports:
-    - "3306:3306"
-  environment:
-    MYSQL_ROOT_PASSWORD: root
-  volumes:
-    - ./storage/percona/data:/var/lib/mysql
-    - ./storage/dumps:/var/dumps
+  backend:
+    build: .
+    build:
+      context: .
+      dockerfile: builders/Nginx
+    container_name: backend
+    ports:
+      - "80:80"
+      - "443:443"
+      - "9000:9000"
+    links:
+      - redis:redis
+      - percona:percona
+    # - mysql:mysql
+    # - gearman:gearman
+    # - solr:solr
+    # - mongo:mongo
+    # - memcached:memcached
+    # - elasticsearch:elasticsearch
+    # - rabbitmq:rabbitmq
+    environment:
+      XDEBUG_CONFIG: remote_host=127.0.0.1
+    volumes:
+      - /var/www:/var/www
+      - ./www:/storage/www
+      - ./www/ssl:/etc/ssl/local/
+      - ./conf/nginx/sites:/etc/nginx/conf.d
+      - ./storage/logs/supervisor:/var/log/supervisor
+      - ./storage/logs/nginx:/var/log/nginx
 
-redis:
-  image: redis
-  container_name: redis
-  ports:
-    - "6379:6379"
+  percona:
+    image: percona
+    container_name: percona
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - /home/tiagosampaio/docker/percona/data:/var/lib/mysql
+      - ./storage/dumps:/var/dumps
 
-#varnish:
-#  build: .
-#  dockerfile: builders/VarnishCache
-#  container_name: varnish
-#  ports:
-#    - "8080:80"
-#  links:
-#    - backend:backend
-#  volumes:
-#    - ./conf/varnish/etc:/etc/varnish
-    
-#gearman:
-#  build: .
-#  dockerfile: builders/Gearman
-#  container_name: gearman
-#  ports:
-#     - "4730:4730"
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
 
-#solr:
-#  image: solr
-#  container_name: solr
-#  ports:
-#    - "27017:27017"
+  #mysql:
+  #  image: mysql
+  #  container_name: mysql
+  #  ports:
+  #    - "3307:3306"
+  #  environment:
+  #    MYSQL_ROOT_PASSWORD: root
+  #  volumes:
+  #    - ./storage/mysql/data:/var/lib/mysql
+  #    - ./storage/dumps:/var/dumps
 
-#mongo:
-#  image: mongo
-#  container_name: mongo
-#  ports:
-#    - "27017:27017"
+  #varnish:
+  #  build: .
+  #  dockerfile: builders/VarnishCache
+  #  container_name: varnish
+  #  ports:
+  #    - "8080:80"
+  #  links:
+  #    - backend:backend
+  #  volumes:
+  #    - ./conf/varnish/etc:/etc/varnish
 
-#memcached:
-#  image: memcached
-#  container_name: memcached
-#  ports:
-#    - "11211:11211"
+  #gearman:
+  #  build: .
+  #  dockerfile: builders/Gearman
+  #  container_name: gearman
+  #  ports:
+  #     - "4730:4730"
 
-#elasticsearch:
-#  image: elasticsearch
-#  container_name: elasticsearch
-#  ports:
-#    - "9200:9200"
-#    - "9300:9300"
+  #solr:
+  #  image: solr
+  #  container_name: solr
+  #  ports:
+  #    - "27017:27017"
 
-#rabbitmq:
-#  image: rabbitmq:3.6.1-management
-#  container_name: rabbitmq
-#  ports:
-#    - "15672:15672"
-#    - "5672:5672"
+  #mongo:
+  #  image: mongo
+  #  container_name: mongo
+  #  ports:
+  #    - "27017:27017"
+
+  #memcached:
+  #  image: memcached
+  #  container_name: memcached
+  #  ports:
+  #    - "11211:11211"
+
+  #elasticsearch:
+  #  image: elasticsearch
+  #  container_name: elasticsearch
+  #  ports:
+  #    - "9200:9200"
+  #    - "9300:9300"
+
+  #rabbitmq:
+  #  image: rabbitmq:3.6.1-management
+  #  container_name: rabbitmq
+  #  ports:
+  #    - "15672:15672"
+  #    - "5672:5672"
