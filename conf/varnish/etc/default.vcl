@@ -7,6 +7,9 @@
 #
 # See the VCL chapters in the Users Guide at https://www.varnish-cache.org/docs/
 # and https://www.varnish-cache.org/trac/wiki/VCLExamples for more examples.
+#
+# See the all built in subroutines available in official documentation:
+# https://varnish-cache.org/docs/trunk/users-guide/vcl-built-in-subs.html
 
 # Marker to tell the VCL compiler that this VCL has been adapted to the
 # new 4.0 format.
@@ -32,6 +35,17 @@ sub vcl_backend_response {
     #
     # Here you clean the response headers, removing silly Set-Cookie headers
     # and other mistakes your backend does.
+
+    # Cache is set to 5 minutes by default.
+    set beresp.ttl = 5m;
+}
+
+sub vcl_backend_error {
+
+}
+
+sub vcl_backend_fetch {
+
 }
 
 sub vcl_deliver {
@@ -45,4 +59,43 @@ sub vcl_deliver {
     } else {
         set resp.http.X-Cache  = "MISS";
     }
+
+    return(deliver);
+}
+
+
+sub vcl_pass {
+
+}
+
+sub vcl_fini {
+
+}
+
+sub vcl_hash {
+
+}
+
+sub vcl_hit {
+
+}
+
+sub vcl_miss {
+
+}
+
+sub vcl_init {
+
+}
+
+sub vcl_pipe {
+
+}
+
+sub vcl_purge {
+
+}
+
+sub vcl_synth {
+
 }
