@@ -27,7 +27,8 @@ RUN apt-get update && apt-get install -my \
   php5-xdebug \
   php5-intl \
   php5-xsl \
-  php-apc
+  php-apc \
+  php5-oauth
 
 # Ensure that PHP5 FPM is run as root.
 RUN sed -i "s/user = www-data/user = root/" /etc/php5/fpm/pool.d/www.conf
