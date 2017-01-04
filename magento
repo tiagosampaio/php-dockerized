@@ -1,0 +1,241 @@
+#!/bin/sh
+#
+# A control-script for managing the docker-infrastructure components for Magento
+
+# The first parameter is the action name
+action=$1
+
+# All other arguments are parameters
+if [ "$#" -gt "1" ]; then
+shift
+parameters=$@
+fi
+
+# Paths
+SCRIPTNAME=`basename $0`
+SCRIPTPATH=$(readlink -f "$0" 2>/dev/null)
+if [ "$?" != 0 ]; then
+    if [ ! -f "docker-compose.yml" ]; then
+	>&2 echo " The $SCRIPTNAME-script will only work (on Mac OS) if you execute it from the project directory itself."
+	exit 1
+    fi
+    SCRIPTPATH="$(pwd -P)/$SCRIPTNAME"
+fi
+PROJECTPATH=$(dirname "$SCRIPTPATH")
+
+# Switch into the project directory
+cd $PROJECTPATH
+
+# Mandatory Tools
+DOCKER=`which docker`
+if [ -z "$DOCKER" ];
+then
+    echo "'docker' was not found on your system." >&2
+    exit 1
+fi
+
+DOCKERCOMPOSE=`which docker-compose`
+if [ -z "$DOCKERCOMPOSE" ];
+then
+    echo "'docker-compose' was not found on your system." >&2
+    exit 1
+fi
+
+# Utils
+XARGS=`which xargs`
+GREP=`which grep`
+SED=`which sed`
+
+#########################################################################
+# Get the full container name for the given container type (e.g. "php")
+# Arguments:
+#  CONTAINER_TYPE
+# Returns:
+#  The full name of the (first) container with the given type
+#########################################################################
+getContainerNameByType() {
+    # abort if no type is specified
+    local CONTAINER_TYPE="$1"
+    if [ -z "$CONTAINER_TYPE" ];
+    then
+        echo "No container type specified. Please specifiy a container type (e.g. php, backend, mysql, percona, ...)."  >&2
+        return 1
+    fi
+
+    # check if xargs is available
+    if [ -z "$XARGS" ];
+    then
+        echo "The tool 'xargs' was not found on your system." >&2
+        return 1
+    fi
+
+    # check if grep is available
+    if [ -z "$GREP" ];
+    then
+        echo "The tool 'grep' was not found on your system." >&2
+        return 1
+    fi
+
+    # check if sed is available
+    if [ -z "$SED" ];
+    then
+        echo "The tool 'sed' was not found on your system." >&2
+        return 1
+    fi
+
+    local containerName=$($DOCKER ps -q | $XARGS $DOCKER inspect --format '{{.Name}}' | $GREP "$CONTAINER_TYPE" | $SED 's:/::' | $GREP "$CONTAINER_TYPE_1")
+    echo $containerName
+    return 0
+}
+
+executeMagerun() {
+    local containerType="installer"
+    local containerName=$(getContainerNameByType "$containerType")
+    if [ -z "$containerName" ];
+    then
+        echo "Cannot determine the name of the container." >&2
+        return 1
+    fi
+
+    $DOCKER exec -ti $containerName magerun --skip-root-check --root-dir="/var/www/html/web" $@
+    return 0
+}
+
+executeComposer() {
+    local containerType="installer"
+    local containerName=$(getContainerNameByType $containerType)
+    if [ -z "$containerName" ];
+    then
+        echo "Cannot determine the name of the container." >&2
+        return 1
+    fi
+
+    $DOCKER exec $containerName composer --working-dir="/var/www/html" $@
+    return 0
+}
+
+enterContainer() {
+    local containerType="$1"
+    if [ -z "$containerType" ];
+    then
+        echo "No container type specified. Please specifiy a container type (e.g. redis, mysql, backend, ...)."  >&2
+        return 1
+    fi
+
+    local containerName=$(getContainerNameByType $containerType)
+    if [ -z "$containerName" ];
+    then
+        echo "Cannot determine the name of the container." >&2
+        return 1
+    fi
+
+    $DOCKER exec -ti $containerName bash
+    return 0
+}
+
+start() {
+    notify-send "Starting Dockerized Magento..."
+    $DOCKERCOMPOSE up -d 
+    notify-send "Dockerized Magento Started."
+}
+
+stop() {
+    notify-send "Stopping Dockerized Magento..."
+    $DOCKERCOMPOSE stop
+    notify-send "Dockerized Magento Stoped."
+}
+
+restart() {
+    $DOCKERCOMPOSE restart
+    executeMagerun cache:clean
+}
+
+status() {
+    $DOCKERCOMPOSE ps
+}
+
+stats() {
+    # check if sed is available
+    if [ -z "$SED" ];
+    then
+        echo "Stats requires 'sed'. The tool was not found on your system." >&2
+        return 1
+    fi
+
+    $DOCKER ps -q | $XARGS $DOCKER inspect --format '{{.Name}}' | $SED 's:/::' | $XARGS $DOCKER stats
+}
+
+magerun() {
+    executeMagerun $parameters
+}
+
+composer() {
+    executeComposer $parameters
+}
+
+enter() {
+    enterContainer $parameters
+}
+
+setPermissions() {
+    var $userGroup = id -gn $USER
+    chown -R $USER:$userGroup $PROJECTPATH
+}
+destroy() {
+    $DOCKERCOMPOSE stop
+    $DOCKERCOMPOSE rm --force
+    rm -rf $PROJECTPATH/web $PROJECTPATH/db $PROJECTPATH/vendor
+}
+
+case "$action" in
+    start)
+    start
+    ;;
+
+    stop)
+    stop
+    ;;
+
+    restart)
+    restart
+    ;;
+
+    status)
+    status
+    ;;
+
+    stats)
+    stats
+    ;;
+
+    #magerun)
+    #magerun
+    #;;
+
+    #composer)
+    #composer
+    #;;
+
+    enter)
+    enter
+    ;;
+
+    #destroy)
+    #destroy
+    #;;
+
+    *)
+    echo "usage : $0 start|stop|restart|status|stats|enter
+
+  start      Starts the docker containers (and triggers the
+             installation if magento is not yet installed)
+  stop       Stops all docker containers
+  restart    Restarts all docker containers
+  status     Prints the status of all docker containers
+  stats      Displays live resource usage statistics of all containers
+  enter      Enters the bash of a given container type (e.g. php, mysql)
+"
+    ;;
+esac
+
+exit 0
