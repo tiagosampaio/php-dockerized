@@ -84,6 +84,12 @@ COPY ./conf/mailhog/cmd.go /tmp/src/github.com/mailhog/mhsendmail/cmd/cmd.go
 RUN cd /tmp/src/github.com/mailhog/mhsendmail/ && go build 
 RUN cp /tmp/src/github.com/mailhog/mhsendmail/mhsendmail /usr/local/bin
 
+
+### Modman
+run wget https://raw.github.com/colinmollenhour/modman/master/modman
+run mv ./modman /usr/bin
+run chmod +x /usr/bin/modman
+
 ################################################################################
 # Volumes
 ################################################################################
