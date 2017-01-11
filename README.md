@@ -31,10 +31,15 @@ PHP Dockerized gives you everything you need for developing PHP applications loc
 
 ## Running
 
-Set up a Docker Machine and then run in background:
+Set up a Docker Machine and then run in background (inside you docker path):
 
 ```sh
-$ docker-compose up -d
+$ ./magento start
+```
+To see all options of magento shell script, type:
+
+```sh
+$ ./magento
 ```
 
 That's it! You can now access your configured sites via the IP address of the Docker Machine or locally if you're running a Linux flavour and using Docker natively.

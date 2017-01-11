@@ -27,7 +27,8 @@ RUN apt-get update && apt-get install -my \
   php5-xdebug \
   php5-intl \
   php5-xsl \
-  php-apc
+  php-apc \
+  php5-oauth
 
 # Ensure that PHP5 FPM is run as root.
 RUN sed -i "s/user = www-data/user = root/" /etc/php5/fpm/pool.d/www.conf
@@ -54,6 +55,8 @@ RUN sed -i '/.*xdebug.so$/s/^/;/' /etc/php5/mods-available/xdebug.ini
 COPY ./conf/nginx/nginx.conf /etc/nginx/
 COPY ./conf/nginx/supervisord.conf /etc/supervisor/conf.d/
 COPY ./conf/php/php.ini /etc/php5/fpm/conf.d/40-custom.ini
+# copy custom php.ini to php-cli
+COPY ./conf/php/php.ini /etc/php5/cli/conf.d/40-custom.ini
 
 # Replace xdebug.ini
 RUN rm -f /etc/php5/mods-available/xdebug.ini
@@ -82,6 +85,12 @@ RUN go get github.com/mailhog/mhsendmail
 COPY ./conf/mailhog/cmd.go /tmp/src/github.com/mailhog/mhsendmail/cmd/cmd.go
 RUN cd /tmp/src/github.com/mailhog/mhsendmail/ && go build 
 RUN cp /tmp/src/github.com/mailhog/mhsendmail/mhsendmail /usr/local/bin
+
+
+### Modman
+run wget https://raw.github.com/colinmollenhour/modman/master/modman
+run mv ./modman /usr/bin
+run chmod +x /usr/bin/modman
 
 ################################################################################
 # Volumes

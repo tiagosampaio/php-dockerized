@@ -24,7 +24,7 @@ services:
     environment:
       XDEBUG_CONFIG: remote_host=127.0.0.1
     volumes:
-      - /home/tiagosampaio/www:/var/www
+      - ./www:/var/www
       - ./www:/storage/www
       - ./www/ssl:/etc/ssl/local/
       - ./conf/nginx/sites:/etc/nginx/conf.d
@@ -39,7 +39,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
     volumes:
-      - /home/tiagosampaio/docker/percona/data:/var/lib/mysql
+      - ./storage/percona/data:/var/lib/mysql
       - ./storage/dumps:/var/dumps
 
   redis:
@@ -66,18 +66,18 @@ services:
   #    - ./storage/mysql/data:/var/lib/mysql
   #    - ./storage/dumps:/var/dumps
 
-  varnish:
-    build: .
-    build:
-      context: .
-      dockerfile: builders/VarnishCache
-    container_name: varnish
-    ports:
-      - "8080:80"
-    links:
-      - backend:backend
-    volumes:
-      - ./conf/varnish/etc:/etc/varnish
+  #varnish:
+  #  build: .
+  #  build:
+  #    context: .
+  #    dockerfile: builders/VarnishCache
+  #  container_name: varnish
+  #  ports:
+  #    - "8080:80"
+  #  links:
+  #    - backend:backend
+  #  volumes:
+  #    - ./conf/varnish/etc:/etc/varnish
 
   #gearman:
   #  build: .
