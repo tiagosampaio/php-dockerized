@@ -135,18 +135,18 @@ enterContainer() {
 
 start() {
     notify-send "Starting Dockerized Magento..."
-    $DOCKERCOMPOSE up -d 
+    $DOCKERCOMPOSE -f docker-compose.yml -f docker-compose-custom.yml up -d 
     notify-send "Dockerized Magento Started."
 }
 
 stop() {
     notify-send "Stopping Dockerized Magento..."
-    $DOCKERCOMPOSE stop
+    $DOCKERCOMPOSE -f docker-compose.yml -f docker-compose-custom.yml stop
     notify-send "Dockerized Magento Stoped."
 }
 
 restart() {
-    $DOCKERCOMPOSE restart
+    $DOCKERCOMPOSE -f docker-compose.yml -f docker-compose-custom.yml restart
     executeMagerun cache:clean
 }
 
@@ -182,7 +182,7 @@ setPermissions() {
     chown -R $USER:$userGroup $PROJECTPATH
 }
 destroy() {
-    $DOCKERCOMPOSE stop
+    $DOCKERCOMPOSE -f docker-compose.yml -f docker-compose-custom.yml stop
     $DOCKERCOMPOSE rm --force
     rm -rf $PROJECTPATH/web $PROJECTPATH/db $PROJECTPATH/vendor
 }
