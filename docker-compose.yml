@@ -41,6 +41,7 @@ services:
     volumes:
       - ./storage/percona/data:/var/lib/mysql
       - ./storage/dumps:/var/dumps
+      - ./conf/percona/conf.d:/etc/mysql/conf.d
 
   redis:
     image: redis
