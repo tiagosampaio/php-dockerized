@@ -40,7 +40,10 @@ then
     echo "'docker-compose' was not found on your system." >&2
     exit 1
 fi
-
+if [ -f "docker-compose-custom.yml" ];
+then
+    DOCKERCOMPOSE="$DOCKERCOMPOSE -f docker-compose.yml -f docker-compose-custom.yml"
+fi
 # Utils
 XARGS=`which xargs`
 GREP=`which grep`
@@ -135,18 +138,18 @@ enterContainer() {
 
 start() {
     notify-send "Starting Dockerized Magento..."
-    $DOCKERCOMPOSE -f docker-compose.yml -f docker-compose-custom.yml up -d 
+    $DOCKERCOMPOSE up -d 
     notify-send "Dockerized Magento Started."
 }
 
 stop() {
     notify-send "Stopping Dockerized Magento..."
-    $DOCKERCOMPOSE -f docker-compose.yml -f docker-compose-custom.yml stop
+    $DOCKERCOMPOSE stop
     notify-send "Dockerized Magento Stoped."
 }
 
 restart() {
-    $DOCKERCOMPOSE -f docker-compose.yml -f docker-compose-custom.yml restart
+    $DOCKERCOMPOSE restart
     executeMagerun cache:clean
 }
 
@@ -172,7 +175,10 @@ magerun() {
 composer() {
     executeComposer $parameters
 }
-
+build() {
+   $DOCKERCOMPOSE stop
+   $DOCKERCOMPOSE build 
+}
 enter() {
     enterContainer $parameters
 }
@@ -182,7 +188,7 @@ setPermissions() {
     chown -R $USER:$userGroup $PROJECTPATH
 }
 destroy() {
-    $DOCKERCOMPOSE -f docker-compose.yml -f docker-compose-custom.yml stop
+    $DOCKERCOMPOSE stop
     $DOCKERCOMPOSE rm --force
     rm -rf $PROJECTPATH/web $PROJECTPATH/db $PROJECTPATH/vendor
 }
@@ -206,6 +212,10 @@ case "$action" in
 
     stats)
     stats
+    ;;
+    
+    build)
+    build
     ;;
 
     #magerun)
@@ -234,6 +244,7 @@ case "$action" in
   status     Prints the status of all docker containers
   stats      Displays live resource usage statistics of all containers
   enter      Enters the bash of a given container type (e.g. php, mysql)
+  build      Stop docker containers then rebuild
 "
     ;;
 esac

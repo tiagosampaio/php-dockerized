@@ -59,8 +59,8 @@ COPY ./conf/php/php.ini /etc/php5/fpm/conf.d/40-custom.ini
 COPY ./conf/php/php.ini /etc/php5/cli/conf.d/40-custom.ini
 
 # Replace xdebug.ini
-# RUN rm -f /etc/php5/mods-available/xdebug.ini
-# COPY ./conf/php/mods-available/xdebug.ini /etc/php5/mods-available/xdebug.ini
+RUN rm -f /etc/php5/mods-available/xdebug.ini
+COPY ./conf/php/mods-available/xdebug.ini /etc/php5/mods-available/xdebug.ini
 
 # Aliases
 RUN echo "alias ll='ls -lah'" >> /root/.bashrc

@@ -33,6 +33,19 @@ Set up a Docker Machine and then run in background (inside you docker path):
 ```sh
 $ ./magento start
 ```
+
+## Enter container
+Enter in specific container
+```sh
+$ ./magento enter CONTAINERNAME
+```
+
+## Rebuild Container
+Stop docker containers then rebuild them
+```sh
+$ ./magento build
+```
+
 To see all options of magento shell script, type:
 ```sh
 $ ./magento
@@ -47,3 +60,4 @@ That's it! You can now access your configured sites via the IP address of the Do
 ## License
 Copyright &copy; 2016 [Tiago Sampaio](http://tiagosampaio.com). Licensed under the terms of the [MIT license](LICENSE.md).
 Contributors: [Marcio Maciel](http://magecore.com.br).
+

@@ -27,7 +27,6 @@ services:
       - ./www:/var/www
       - ./conf/nginx/ssl:/etc/ssl/local/
       - ./conf/nginx/sites:/etc/nginx/conf.d
-      - ./conf/php/mods-available:/etc/php5/mods-available
       - ./storage/logs/supervisor:/var/log/supervisor
       - ./storage/logs/nginx:/var/log/nginx
 
