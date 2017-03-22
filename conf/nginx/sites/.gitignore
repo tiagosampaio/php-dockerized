@@ -2,3 +2,4 @@
 !.gitignore
 !default.vhost
 !default.conf
+!*.tpl
