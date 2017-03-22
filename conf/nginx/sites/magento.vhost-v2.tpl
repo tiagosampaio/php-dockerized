@@ -3,7 +3,7 @@
 #####################
 server {
   server_name  dev.magento.com magento.dev magento.local;
-  root         /var/www/magento;
+  root         /var/www/html/magento;
   index        index.php;
 
   client_max_body_size 100M;
@@ -72,7 +72,7 @@ server {
 #####################
 server {
   server_name  dev.magento.com magento.dev magento.local;
-  root         /var/www/magento;
+  root         /var/www/html/magento;
   index        index.php;
 
   client_max_body_size 100M;
@@ -81,8 +81,8 @@ server {
   ### Note that here is basically the difference.
   listen 443 ssl;
   ssl on;
-  ssl_certificate_key /etc/ssl/local/samsung/samsung.key;
-  ssl_certificate     /etc/ssl/local/samsung/samsung.crt;
+  ssl_certificate_key /etc/ssl/local/website/certificate.key;
+  ssl_certificate     /etc/ssl/local/website/certificate.crt;
   ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
   ssl_ciphers         HIGH:!aNULL:!MD5;
 
@@ -127,15 +127,19 @@ server {
   }
 
   location ~ \.php$ {
-    try_files       $uri=404;
-    include         fastcgi_params;
-    fastcgi_index   index.php;
-    fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    fastcgi_param   MAGE_IS_DEVELOPER_MODE 'on';
-    fastcgi_param   MAGE_RUN_CODE '';
-    fastcgi_param   MAGE_RUN_TYPE 'website';
-    fastcgi_pass    unix:/var/run/php5-fpm.sock;
-    access_log      /var/log/nginx/magento-access-ssl.log main;
-    error_log       /var/log/nginx/magento-error-ssl.log;
+    try_files               $uri=404;
+    include                 fastcgi_params;
+    fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    fastcgi_index           index.php;
+    fastcgi_param           SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_param           PATH_INFO $fastcgi_path_info;
+    fastcgi_param           MAGE_IS_DEVELOPER_MODE 'on';
+    fastcgi_param           MAGE_RUN_CODE '';
+    fastcgi_param           MAGE_RUN_TYPE 'website';
+    access_log              /var/log/nginx/magento-access-ssl.log main;
+    error_log               /var/log/nginx/magento-error-ssl.log;
+    fastcgi_pass            php:9000;
+    # fastcgi_pass          unix:/var/run/php5-fpm.sock;
+    # fastcgi_pass          unix:/var/run/hhvm/hhvm.sock;
   }
 }

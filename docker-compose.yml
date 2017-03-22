@@ -1,19 +1,20 @@
-version: '2'
+version: '3'
 services:
   backend:
-    build: .
-    build:
-      context: .
-      dockerfile: builders/Nginx
+#    build: .
+#    build:
+#      context: .
+#      dockerfile: builders/Nginx
+    image: nginx
     container_name: backend
     ports:
       - "80:80"
       - "443:443"
-      - "9000:9000"
-    links:
-      - redis:redis
-      - percona:percona
-      - mailhog:mailhog
+#      - "9000:9000"
+#    links:
+#      - redis:redis
+#      - percona:percona
+#      - mailhog:mailhog
     # - mysql:mysql
     # - gearman:gearman
     # - solr:solr
@@ -24,34 +25,40 @@ services:
     environment:
       XDEBUG_CONFIG: remote_host=127.0.0.1 remote_connect_back=0
     volumes:
-      - ./www:/var/www
+      - ./www:/var/www/html/
       - ./conf/nginx/ssl:/etc/ssl/local/
       - ./conf/nginx/sites:/etc/nginx/conf.d
       - ./storage/logs/supervisor:/var/log/supervisor
       - ./storage/logs/nginx:/var/log/nginx
 
-  percona:
-    image: percona
-    container_name: percona
-    ports:
-      - "3306:3306"
+  php:
+    image: php:7.1.3-fpm
+    container_name: php713
     volumes:
-      - ./storage/percona/data:/var/lib/mysql
-      - ./storage/dumps:/var/dumps
-      - ./conf/percona/conf.d:/etc/mysql/percona-server.conf.d
+      - ./www:/var/www/html
 
-  redis:
-    image: redis
-    container_name: redis
-    ports:
-      - "6379:6379"
+#  percona:
+#    image: percona
+#    container_name: percona
+#    ports:
+#      - "3306:3306"
+#    volumes:
+#      - ./storage/percona/data:/var/lib/mysql
+#      - ./storage/dumps:/var/dumps
+#      - ./conf/percona/conf.d:/etc/mysql/percona-server.conf.d
 
-  mailhog:
-     image: mailhog/mailhog
-     container_name: mailhog
-     ports:
-       - "1025:1025"
-       - "8025:8025"
+#  redis:
+#    image: redis
+#    container_name: redis
+#    ports:
+#      - "6379:6379"
+
+#  mailhog:
+#     image: mailhog/mailhog
+#     container_name: mailhog
+#     ports:
+#       - "1025:1025"
+#       - "8025:8025"
 
   #mysql:
   #  image: mysql
