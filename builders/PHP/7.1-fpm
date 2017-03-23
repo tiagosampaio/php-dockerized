@@ -1,6 +1,6 @@
 ### Base Image #########################################################################################################
 
-FROM php:5.6-fpm
+FROM php:7.1-fpm
 
 ### Build instructions #################################################################################################
 
@@ -11,7 +11,7 @@ RUN mkdir -p /var/scripts
 COPY ./builders/scripts/* /var/scripts/
 
 ### Install PHP packages
-RUN sh /var/scripts/php56.sh
+# RUN sh /var/scripts/php71.sh
 
 ### Install Tools
 RUN sh /var/scripts/tools.sh
@@ -26,7 +26,7 @@ COPY ./conf/php/fpm/php-fpm.conf /usr/local/etc/php-fpm.conf
 
 ### Replace php.ini
 RUN rm -f /usr/local/etc/php/php.ini
-COPY ./conf/php/5.6/php.ini /usr/local/etc/php/
+COPY ./conf/php/7.1/php.ini /usr/local/etc/php/
 
 ### Install Mailhog
 ENV GOPATH /tmp

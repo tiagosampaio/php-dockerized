@@ -19,11 +19,24 @@ services:
       - backend
 
   php56:
-    build: .
     build:
       context: .
-      dockerfile: builders/PHP/5.6-fpm
+      dockerfile: ./builders/PHP/5.6-fpm
     container_name: php56
+    restart: always
+    volumes:
+      - ./www:/var/www/html
+      - ./conf/php/5.6/mods-available:/usr/local/etc/php/conf.d
+      - ./conf/php/fpm/php-fpm.d:/usr/local/etc/php-fpm.d
+      - ./storage/logs/php-fpm/5.6:/var/log/php-fpm
+    networks:
+      - backend
+
+  php71:
+    build:
+        context: .
+        dockerfile: ./builders/PHP/7.1-fpm
+    container_name: php71
     restart: always
     volumes:
       - ./www:/var/www/html
