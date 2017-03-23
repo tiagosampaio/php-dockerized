@@ -2,7 +2,7 @@
 # Base image
 ################################################################################
 
-FROM debian:jessie
+FROM php:5.6-fpm
 
 ################################################################################
 # Build instructions
@@ -10,8 +10,6 @@ FROM debian:jessie
 
 # Install packages
 RUN apt-get update && apt-get install -my \
-  supervisor \
-  curl \
   wget \
   vim \
   php5-curl \
@@ -28,36 +26,28 @@ RUN apt-get update && apt-get install -my \
   php5-oauth
 
 # Ensure that PHP5 FPM is run as root.
-RUN sed -i "s/user = www-data/user = root/" /etc/php5/fpm/pool.d/www.conf
-RUN sed -i "s/group = www-data/group = root/" /etc/php5/fpm/pool.d/www.conf
+#RUN sed -i "s/user = www-data/user = root/" /usr/local/etc/php-fpm.d/www.conf
+#RUN sed -i "s/group = www-data/group = root/" /usr/local/etc/php-fpm.d/www.conf
 
 # Pass all docker environment
-RUN sed -i '/^;clear_env = no/s/^;//' /etc/php5/fpm/pool.d/www.conf
+RUN sed -i '/^;clear_env = no/s/^;//' /usr/local/etc/php-fpm.d/www.conf
 
 # Get access to FPM-ping page /ping
-RUN sed -i '/^;ping\.path/s/^;//' /etc/php5/fpm/pool.d/www.conf
+RUN sed -i '/^;ping\.path/s/^;//' /usr/local/etc/php-fpm.d/www.conf
 # Get access to FPM_Status page /status
-RUN sed -i '/^;pm\.status_path/s/^;//' /etc/php5/fpm/pool.d/www.conf
+RUN sed -i '/^;pm\.status_path/s/^;//' /usr/local/etc/php-fpm.d/www.conf
 
 # Prevent PHP Warning: 'xdebug' already loaded.
 # XDebug loaded with the core
 RUN sed -i '/.*xdebug.so$/s/^/;/' /etc/php5/mods-available/xdebug.ini
 
-# Install HHVM
-# RUN apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0x5a16e7281be7a449
-# RUN echo deb http://dl.hhvm.com/debian jessie main | tee /etc/apt/sources.list.d/hhvm.list
-# RUN apt-get update && apt-get install -y hhvm
-
-# Add configuration files
-COPY ./conf/nginx/nginx.conf /etc/nginx/
-COPY ./conf/nginx/supervisord.conf /etc/supervisor/conf.d/
-COPY ./conf/php/php.ini /etc/php5/fpm/conf.d/40-custom.ini
-# copy custom php.ini to php-cli
-COPY ./conf/php/php.ini /etc/php5/cli/conf.d/40-custom.ini
+# Replace php.ini
+RUN rm -f /usr/local/etc/php/php.ini
+COPY ./conf/php/php.ini /usr/local/etc/php/
 
 # Replace xdebug.ini
-RUN rm -f /etc/php5/mods-available/xdebug.ini
-COPY ./conf/php/mods-available/xdebug.ini /etc/php5/mods-available/xdebug.ini
+#RUN rm -f /etc/php5/mods-available/xdebug.ini
+#COPY ./conf/php/mods-available/xdebug.ini /etc/php5/mods-available/xdebug.ini
 
 # Aliases
 RUN echo "alias ll='ls -lah'" >> /root/.bashrc
@@ -88,21 +78,3 @@ RUN cp /tmp/src/github.com/mailhog/mhsendmail/mhsendmail /usr/local/bin
 run wget https://raw.github.com/colinmollenhour/modman/master/modman
 run mv ./modman /usr/bin
 run chmod +x /usr/bin/modman
-
-################################################################################
-# Volumes
-################################################################################
-
-VOLUME ["/var/www", "/etc/nginx/conf.d"]
-
-################################################################################
-# Ports
-################################################################################
-
-EXPOSE 80 443 9000
-
-################################################################################
-# Entrypoint
-################################################################################
-
-ENTRYPOINT ["/usr/bin/supervisord"]

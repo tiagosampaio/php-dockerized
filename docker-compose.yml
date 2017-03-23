@@ -32,7 +32,10 @@ services:
       - ./storage/logs/nginx:/var/log/nginx
 
   php:
-    image: php:5.6-fpm
+    build: .
+    build:
+      context: .
+      dockerfile: builders/PHP/5.6-fpm
     container_name: php56
     volumes:
       - ./www:/var/www/html
