@@ -24,8 +24,6 @@ services:
       dockerfile: ./builders/PHP/5.6-fpm
     container_name: php56
     restart: always
-    environment:
-          XDEBUG_CONFIG: remote_host=127.0.0.1 remote_connect_back=0
     volumes:
       - ./www:/var/www/html
       - ./www/default:/var/www/default
@@ -41,8 +39,6 @@ services:
         dockerfile: ./builders/PHP/7.1-fpm
     container_name: php71
     restart: always
-    environment:
-          XDEBUG_CONFIG: remote_host=127.0.0.1 remote_connect_back=0
     volumes:
       - ./www:/var/www/html
       - ./www/default:/var/www/default
