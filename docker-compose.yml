@@ -24,6 +24,7 @@ services:
     # - rabbitmq:rabbitmq
     environment:
       XDEBUG_CONFIG: remote_host=127.0.0.1 remote_connect_back=0
+    restart: always
     volumes:
       - ./www:/var/www/html/
       - ./conf/nginx/ssl:/etc/ssl/local/
@@ -37,32 +38,33 @@ services:
       context: .
       dockerfile: builders/PHP/5.6-fpm
     container_name: php56
+    restart: always
     volumes:
       - ./www:/var/www/html
       - ./conf/php/mods-available:/usr/local/etc/php/conf.d
 
-#  percona:
-#    image: percona
-#    container_name: percona
-#    ports:
-#      - "3306:3306"
-#    volumes:
-#      - ./storage/percona/data:/var/lib/mysql
-#      - ./storage/dumps:/var/dumps
-#      - ./conf/percona/conf.d:/etc/mysql/percona-server.conf.d
+  percona:
+    image: percona
+    container_name: percona
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./storage/percona/data:/var/lib/mysql
+      - ./storage/dumps:/var/dumps
+      - ./conf/percona/conf.d:/etc/mysql/percona-server.conf.d
 
-#  redis:
-#    image: redis
-#    container_name: redis
-#    ports:
-#      - "6379:6379"
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
 
-#  mailhog:
-#     image: mailhog/mailhog
-#     container_name: mailhog
-#     ports:
-#       - "1025:1025"
-#       - "8025:8025"
+  mailhog:
+     image: mailhog/mailhog
+     container_name: mailhog
+     ports:
+       - "1025:1025"
+       - "8025:8025"
 
   #mysql:
   #  image: mysql

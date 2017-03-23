@@ -23,7 +23,9 @@ RUN apt-get update && apt-get install -my \
   php5-intl \
   php5-xsl \
   php-apc \
-  php5-oauth
+  php5-oauth \
+  golang-go \
+  git
 
 # Ensure that PHP5 FPM is run as root.
 #RUN sed -i "s/user = www-data/user = root/" /usr/local/etc/php-fpm.d/www.conf
@@ -65,7 +67,6 @@ RUN chmod +x n98-magerun.phar
 RUN mv ./n98-magerun.phar /usr/local/bin/n98-magerun
 
 ### Mailhog
-RUN apt-get install -my golang-go git
 ENV GOPATH /tmp
 RUN cd /tmp
 RUN go get github.com/mailhog/mhsendmail
