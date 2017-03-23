@@ -47,26 +47,26 @@ RUN sed -i '/^;pm\.status_path/s/^;//' /usr/local/etc/php-fpm.d/www.conf
 # XDebug loaded with the core
 # RUN sed -i '/.*xdebug.so$/s/^/;/' /etc/php5/mods-available/xdebug.ini
 
-# Replace php.ini
+### Replace php.ini
 RUN rm -f /usr/local/etc/php/php.ini
 COPY ./conf/php/5.6/php.ini /usr/local/etc/php/
 
-# Aliases
+### Aliases
 RUN echo "alias ll='ls -lah'" >> /root/.bashrc
 RUN echo "alias l='ll'"       >> /root/.bashrc
 RUN echo "alias c='clear'"    >> /root/.bashrc
 
-# Install Composer
+### Install Composer
 RUN wget https://getcomposer.org/composer.phar
 RUN chmod +x composer.phar
 RUN mv composer.phar /usr/local/bin/composer
 
-# Install N98-Magerun
+### Install N98-Magerun
 RUN wget https://files.magerun.net/n98-magerun.phar
 RUN chmod +x n98-magerun.phar
 RUN mv ./n98-magerun.phar /usr/local/bin/n98-magerun
 
-### Mailhog
+### Install Mailhog
 ENV GOPATH /tmp
 RUN cd /tmp
 RUN go get github.com/mailhog/mhsendmail
@@ -74,8 +74,7 @@ COPY ./conf/mailhog/cmd.go /tmp/src/github.com/mailhog/mhsendmail/cmd/cmd.go
 RUN cd /tmp/src/github.com/mailhog/mhsendmail/ && go build
 RUN cp /tmp/src/github.com/mailhog/mhsendmail/mhsendmail /usr/local/bin
 
-
-### Modman
+### Install Modman
 run wget https://raw.github.com/colinmollenhour/modman/master/modman
 run mv ./modman /usr/bin
 run chmod +x /usr/bin/modman
