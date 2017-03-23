@@ -9,6 +9,7 @@ services:
     restart: always
     volumes:
       - ./www:/var/www/html/
+      - ./www/default:/var/www/default
       - ./conf/nginx/ssl:/etc/ssl/local/
       - ./conf/nginx/sites/includes:/etc/nginx/includes
       - ./conf/nginx/sites/conf.d:/etc/nginx/conf.d
@@ -27,6 +28,7 @@ services:
           XDEBUG_CONFIG: remote_host=127.0.0.1 remote_connect_back=0
     volumes:
       - ./www:/var/www/html
+      - ./www/default:/var/www/default
       - ./conf/php/5.6/mods-available:/usr/local/etc/php/conf.d
       - ./conf/php/fpm/php-fpm.d:/usr/local/etc/php-fpm.d
       - ./storage/logs/php-fpm/5.6:/var/log/php-fpm
@@ -43,6 +45,7 @@ services:
           XDEBUG_CONFIG: remote_host=127.0.0.1 remote_connect_back=0
     volumes:
       - ./www:/var/www/html
+      - ./www/default:/var/www/default
       - ./conf/php/5.6/mods-available:/usr/local/etc/php/conf.d
       - ./conf/php/fpm/php-fpm.d:/usr/local/etc/php-fpm.d
       - ./storage/logs/php-fpm/5.6:/var/log/php-fpm
