@@ -10,7 +10,8 @@ services:
     volumes:
       - ./www:/var/www/html/
       - ./conf/nginx/ssl:/etc/ssl/local/
-      - ./conf/nginx/sites:/etc/nginx/conf.d
+      - ./conf/nginx/sites/includes:/etc/nginx/includes
+      - ./conf/nginx/sites/conf.d:/etc/nginx/conf.d
       - ./storage/logs/supervisor:/var/log/supervisor
       - ./storage/logs/nginx:/var/log/nginx
     networks:
