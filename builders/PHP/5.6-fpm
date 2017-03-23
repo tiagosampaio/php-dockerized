@@ -27,6 +27,10 @@ RUN apt-get update && apt-get install -my \
   golang-go \
   git
 
+RUN mkdir -p /var/log/php-fpm
+RUN rm -rf /usr/local/etc/php-fpm.conf
+COPY ./conf/php/fpm/php-fpm.conf /usr/local/etc/php-fpm.conf
+
 # Ensure that PHP5 FPM is run as root.
 #RUN sed -i "s/user = www-data/user = root/" /usr/local/etc/php-fpm.d/www.conf
 #RUN sed -i "s/group = www-data/group = root/" /usr/local/etc/php-fpm.d/www.conf
@@ -41,15 +45,11 @@ RUN sed -i '/^;pm\.status_path/s/^;//' /usr/local/etc/php-fpm.d/www.conf
 
 # Prevent PHP Warning: 'xdebug' already loaded.
 # XDebug loaded with the core
-RUN sed -i '/.*xdebug.so$/s/^/;/' /etc/php5/mods-available/xdebug.ini
+# RUN sed -i '/.*xdebug.so$/s/^/;/' /etc/php5/mods-available/xdebug.ini
 
 # Replace php.ini
 RUN rm -f /usr/local/etc/php/php.ini
-COPY ./conf/php/php.ini /usr/local/etc/php/
-
-# Replace xdebug.ini
-#RUN rm -f /etc/php5/mods-available/xdebug.ini
-#COPY ./conf/php/mods-available/xdebug.ini /etc/php5/mods-available/xdebug.ini
+COPY ./conf/php/5.6/php.ini /usr/local/etc/php/
 
 # Aliases
 RUN echo "alias ll='ls -lah'" >> /root/.bashrc
