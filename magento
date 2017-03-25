@@ -137,15 +137,21 @@ enterContainer() {
 }
 
 start() {
-    notify-send "Starting Dockerized Magento..."
+    notify-send "Starting Dockerized Application..."
     $DOCKERCOMPOSE up -d 
-    notify-send "Dockerized Magento Started."
+    notify-send "Dockerized Application Started."
 }
 
 stop() {
-    notify-send "Stopping Dockerized Magento..."
+    notify-send "Stopping Dockerized Application..."
     $DOCKERCOMPOSE stop
-    notify-send "Dockerized Magento Stoped."
+    notify-send "Dockerized Application Stoped."
+}
+
+down() {
+    notify-send "Stopping Dockerized Application..."
+    $DOCKERCOMPOSE down
+    notify-send "Dockerized Application Stoped."
 }
 
 restart() {
@@ -226,7 +232,15 @@ case "$action" in
     #composer
     #;;
 
+    down)
+    down
+    ;;
+
     enter)
+    enter
+    ;;
+
+    ssh)
     enter
     ;;
 
@@ -237,14 +251,14 @@ case "$action" in
     *)
     echo "usage : $0 start|stop|restart|status|stats|enter
 
-  start      Starts the docker containers (and triggers the
-             installation if magento is not yet installed)
-  stop       Stops all docker containers
-  restart    Restarts all docker containers
-  status     Prints the status of all docker containers
-  stats      Displays live resource usage statistics of all containers
-  enter      Enters the bash of a given container type (e.g. php, mysql)
-  build      Stop docker containers then rebuild
+  start        Starts the docker containers (and triggers the
+               installation if magento is not yet installed)
+  stop         Stops all docker containers
+  restart      Restarts all docker containers
+  status       Prints the status of all docker containers
+  stats        Displays live resource usage statistics of all containers
+  ssh | enter  Enters the bash of a given container type (e.g. php, mysql)
+  build        Stop docker containers then rebuild
 "
     ;;
 esac
