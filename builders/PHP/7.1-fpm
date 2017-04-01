@@ -11,7 +11,8 @@ RUN mkdir -p /var/scripts
 COPY ./builders/scripts/* /var/scripts/
 
 ### Install PHP packages
-# RUN sh /var/scripts/php71.sh
+RUN sh /var/scripts/base.sh
+RUN sh /var/scripts/php71.sh
 
 ### Install Tools
 RUN sh /var/scripts/tools.sh

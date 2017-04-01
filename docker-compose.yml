@@ -43,6 +43,7 @@ services:
       - ./www:/var/www/html
       - ./www/default:/var/www/default
       - ./conf/php/5.6/mods-available:/usr/local/etc/php/conf.d
+      - ./conf/php/7.1/mods-available:/usr/local/etc/php/conf.d
       - ./conf/php/fpm/php-fpm.d:/usr/local/etc/php-fpm.d
       - ./storage/logs/php-fpm/5.6:/var/log/php-fpm
     networks:
@@ -50,7 +51,13 @@ services:
 
   percona:
     image: percona
+    image: percona:latest
     container_name: percona
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: percona
+      MYSQL_PASSWORD: percona
     ports:
       - "3306:3306"
     volumes:
