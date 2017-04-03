@@ -11,18 +11,16 @@ RUN mkdir -p /var/scripts
 COPY ./builders/scripts/* /var/scripts/
 
 ### Install PHP packages
-RUN sh /var/scripts/base.sh
-RUN sh /var/scripts/php71.sh
+RUN sh /var/scripts/base.sh && \
+    sh /var/scripts/php71.sh && \
+    sh /var/scripts/tools.sh && \
+    sh /var/scripts/aliases.sh && \
+    sh /var/scripts/composer.sh && \
+    sh /var/scripts/n98-magerun.sh && \
+    sh /var/scripts/modman.sh
 
-### Install Tools
-RUN sh /var/scripts/tools.sh
-RUN sh /var/scripts/aliases.sh
-RUN sh /var/scripts/composer.sh
-RUN sh /var/scripts/n98-magerun.sh
-RUN sh /var/scripts/modman.sh
-
-RUN mkdir -p /var/log/php-fpm
-RUN rm -rf /usr/local/etc/php-fpm.conf
+RUN mkdir -p /var/log/php-fpm && \
+    rm -rf /usr/local/etc/php-fpm.conf
 COPY ./conf/php/fpm/php-fpm.conf /usr/local/etc/php-fpm.conf
 
 ### Replace php.ini

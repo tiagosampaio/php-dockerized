@@ -42,6 +42,7 @@ docker-php-ext-install \
 
 EXTENSION_DIR=$(php-config --extension-dir);
 
+
 ########################################################################################################################
 ## Install XDebug Manually
 ########################################################################################################################
@@ -53,10 +54,10 @@ phpize && ./configure && make
 mv ./modules/xdebug.so $EXTENSION_DIR
 cd .. && rm -rf xdebug xdebug-2.5.1.tgz
 
+
 ########################################################################################################################
 ## Install OAuth Manually
 ########################################################################################################################
-
 wget -P /var/tmp http://pecl.php.net/get/oauth-2.0.2.tgz
 
 cd /var/tmp && tar -xf oauth-2.0.2.tgz && mv oauth-2.0.2 oauth && cd oauth
@@ -65,10 +66,9 @@ phpize && ./configure && make
 mv ./modules/oauth.so $EXTENSION_DIR
 cd .. && rm -rf oauth oauth-2.0.2.tgz
 
-#INSTALL_DIR=/usr/lib/php5/20131226
-#EXTENSION_DIR=$(php-config --extension-dir)
 
-#mv $INSTALL_DIR/xdebug.so    $EXTENSION_DIR
-#mv $INSTALL_DIR/oauth.so     $EXTENSION_DIR
-#mv $INSTALL_DIR/memcached.so $EXTENSION_DIR
-#mv $INSTALL_DIR/apcu.so      $EXTENSION_DIR
+########################################################################################################################
+## Install PHP Mass Detector 2.6.0
+########################################################################################################################
+wget http://static.phpmd.org/php/2.6.0/phpmd.phar
+mv ./phpmd.phar /usr/local/bin/phpmd && chmod +x /usr/local/bin/phpmd
