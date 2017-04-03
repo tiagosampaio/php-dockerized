@@ -40,6 +40,31 @@ docker-php-ext-install \
   session \
   simplexml
 
+EXTENSION_DIR=$(php-config --extension-dir);
+
+########################################################################################################################
+## Install XDebug Manually
+########################################################################################################################
+wget -P /var/tmp https://xdebug.org/files/xdebug-2.5.1.tgz
+
+cd /var/tmp && tar -xf xdebug-2.5.1.tgz && mv xdebug-2.5.1 xdebug && cd xdebug
+phpize && ./configure && make
+
+mv ./modules/xdebug.so $EXTENSION_DIR
+cd .. && rm -rf xdebug xdebug-2.5.1.tgz
+
+########################################################################################################################
+## Install OAuth Manually
+########################################################################################################################
+
+wget -P /var/tmp http://pecl.php.net/get/oauth-2.0.2.tgz
+
+cd /var/tmp && tar -xf oauth-2.0.2.tgz && mv oauth-2.0.2 oauth && cd oauth
+phpize && ./configure && make
+
+mv ./modules/oauth.so $EXTENSION_DIR
+cd .. && rm -rf oauth oauth-2.0.2.tgz
+
 #INSTALL_DIR=/usr/lib/php5/20131226
 #EXTENSION_DIR=$(php-config --extension-dir)
 

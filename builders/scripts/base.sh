@@ -10,6 +10,8 @@ apt-get install -my \
   libpng-dev \
   libjpeg-dev \
   libedit-dev \
+  libpcre3-dev \
   lsof \
   libcurl4-openssl-dev \
-  libperl4-corelibs-perl
+  libperl4-corelibs-perl \
+  wget

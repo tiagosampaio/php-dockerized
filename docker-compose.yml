@@ -50,7 +50,6 @@ services:
       - backend
 
   percona:
-    image: percona
     image: percona:latest
     container_name: percona
     restart: always
@@ -63,7 +62,7 @@ services:
     volumes:
       - ./storage/percona/data:/var/lib/mysql
       - ./storage/dumps:/var/dumps
-      - ./conf/percona/conf.d:/etc/mysql/percona-server.conf.d
+      # - ./conf/percona/conf.d:/etc/mysql/percona-server.conf.d
     networks:
       - backend
 
