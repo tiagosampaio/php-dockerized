@@ -42,7 +42,6 @@ services:
     volumes:
       - ./www:/var/www/html
       - ./www/default:/var/www/default
-      - ./conf/php/5.6/mods-available:/usr/local/etc/php/conf.d
       - ./conf/php/7.1/mods-available:/usr/local/etc/php/conf.d
       - ./conf/php/fpm/php-fpm.d:/usr/local/etc/php-fpm.d
       - ./storage/logs/php-fpm/5.6:/var/log/php-fpm
