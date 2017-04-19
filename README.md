@@ -59,5 +59,8 @@ That's it! You can now access your configured sites via the IP address of the Do
 
 ## License
 Copyright &copy; 2016 [Tiago Sampaio](http://tiagosampaio.com). Licensed under the terms of the [MIT license](LICENSE.md).
-Contributors: [Marcio Maciel](http://magecore.com.br).
 
+## Contributors
+
+* [Tiago Sampaio](http://tiagosampaio.com)
+* [Marcio Maciel](http://magecore.com.br)
