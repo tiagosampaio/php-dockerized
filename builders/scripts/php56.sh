@@ -7,6 +7,7 @@ apt-get install -my \
   php5-common \
   php5-oauth \
   php5-memcached \
+  php5-redis \
   php-apc
 #  php5-xdebug \
 #  php5-curl \
@@ -40,7 +41,8 @@ docker-php-ext-install \
   opcache \
   json \
   session \
-  simplexml
+  simplexml \
+  soap
 
 INSTALL_DIR=/usr/lib/php5/20131226
 EXTENSION_DIR=$(php-config --extension-dir)

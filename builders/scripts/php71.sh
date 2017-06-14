@@ -38,7 +38,8 @@ docker-php-ext-install \
   opcache \
   json \
   session \
-  simplexml
+  simplexml \
+  soap
 
 EXTENSION_DIR=$(php-config --extension-dir);
 
