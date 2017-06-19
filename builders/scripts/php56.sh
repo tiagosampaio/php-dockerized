@@ -19,6 +19,8 @@ apt-get install -my \
 #  php5-xsl \
 #  php-apc \
 
+cp /etc/php5/mods-available/redis.ini /usr/local/etc/php/conf.d
+
 ########################################################################################################################
 ## Compile the PHP extensions already included in the PHP's official docker container.
 ########################################################################################################################
@@ -67,6 +69,7 @@ mv $INSTALL_DIR/xdebug.so    $EXTENSION_DIR
 mv $INSTALL_DIR/oauth.so     $EXTENSION_DIR
 mv $INSTALL_DIR/memcached.so $EXTENSION_DIR
 mv $INSTALL_DIR/apcu.so      $EXTENSION_DIR
+mv $INSTALL_DIR/redis.so     $EXTENSION_DIR
 
 
 ########################################################################################################################
