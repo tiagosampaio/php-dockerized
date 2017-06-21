@@ -14,6 +14,7 @@ COPY ./builders/scripts/* /var/scripts/
 RUN sh /var/scripts/base.sh && \
     sh /var/scripts/php71.sh && \
     sh /var/scripts/tools.sh && \
+    sh /var/scripts/cron.sh && \
     sh /var/scripts/aliases.sh && \
     sh /var/scripts/composer.sh && \
     sh /var/scripts/n98-magerun.sh && \
